@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <meta http-equiv="refresh" content="20">
+
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <title>Surveillance Car</title>
+</head>
+<body>
+    <div class="text-center text-xl font-bold m-2 mt-5 mb-4"><i class="fa-solid fa-car mr-2 text-green-700"></i>Surveillance Car</div>
+    <section class="text-center my-2 mb-20 mx-2">
+        <div class="py-8 border border-2 border-yellow-400 rounded-xl shadow shadow-yellow-400">
+            <div class="text-2xl font-bold text-red-600 mb-2">Motion Status <i class="fa-solid fa-temperature-low ml-2"></i></div>
+            <div class="text-2xl font-bold " id="field1Data">
+                <div id="motionDiv">
+                    Motion: Loading...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="grid grid-cols-3 gap-2 text-center my-2 mx-2">
+        <div class="py-10 border border-2 border-yellow-400 rounded-xl shadow shadow-yellow-400">
+            <div class="text-md font-bold text-red-600 mb-10">Left Object Distance <br>(in cms)</div>
+            <div class="text-md font-bold ">
+                <div id="leftDiv">
+                    Left Dist: Loading...
+                </div>
+            </div>
+        </div>
+        <div class="py-10 border border-2 border-yellow-400 rounded-xl shadow shadow-yellow-400">
+            <div class="text-md font-bold text-red-600 mb-10">Front Object Distance <br>(in cms)</div>
+            <div class="text-md font-bold ">
+                <div id="frontDiv">
+                    Front Dist: Loading...
+                </div>
+            </div>
+        </div>
+        <div class="py-10 border border-2 border-yellow-400 rounded-xl shadow shadow-yellow-400">
+            <div class="text-md font-bold text-indigo-600 mb-10">Right Object Distance <br>(in cms)</div>
+            <div class="text-md font-bold ">
+                <div id="rightDiv">
+                    Right Dist: Loading...
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        // Fetch data for field1
+        fetch('https://api.thingspeak.com/channels/2507816/fields/1.json?results=1')
+            .then(response => response.json())
+            .then(data => {
+                // Extract field1 data from the response
+                const field1Data = data.feeds[0].field1;
+
+                // Display the field1 data on the webpage
+                //document.getElementById('motionDiv').innerText = `${field1Data}`;
+
+                // Display the field1 data on the webpage
+                if (field1Data == 0) {
+                    document.getElementById('motionDiv').innerText = "No Motion Detected";
+                } else {
+                    document.getElementById('motionDiv').innerText = "Motion Detected";
+                }
+
+            })
+            .catch(error => {
+                console.error('Error fetching field1 data:', error);
+            });
+
+        // Fetch data for field2
+        fetch('https://api.thingspeak.com/channels/2507816/fields/2.json?results=1')
+            .then(response => response.json())
+            .then(data => {
+                // Extract field2 data from the response
+                const field2Data = data.feeds[0].field2;
+
+                // Display the field2 data on the webpage
+                document.getElementById('leftDiv').innerText = `${field2Data}`;
+            })
+            .catch(error => {
+                console.error('Error fetching field2 data:', error);
+            });
+
+        // Fetch data for field3
+        fetch('https://api.thingspeak.com/channels/2507816/fields/3.json?results=1')
+            .then(response => response.json())
+            .then(data => {
+                // Extract field3 data from the response
+                const field3Data = data.feeds[0].field3;
+
+                // Display the field2 data on the webpage
+                document.getElementById('frontDiv').innerText = `${field3Data}`;
+            })
+            .catch(error => {
+                console.error('Error fetching field3 data:', error);
+            });
+
+        // Fetch data for field4
+        fetch('https://api.thingspeak.com/channels/2507816/fields/4.json?results=1')
+            .then(response => response.json())
+            .then(data => {
+                // Extract field4 data from the response
+                const field4Data = data.feeds[0].field4;
+
+                // Display the field4 data on the webpage
+                document.getElementById('rightDiv').innerText = `${field4Data}`;
+            })
+            .catch(error => {
+                console.error('Error fetching field2 data:', error);
+            });
+    </script>
+</body>
+</html>
